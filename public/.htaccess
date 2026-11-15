@@ -1,0 +1,75 @@
+# Konfiguracja serwera dla Hostinger (LiteSpeed / Apache)
+
+Options -Indexes
+DirectoryIndex index.html
+
+# --- Adres kanoniczny: https://fitzapasy.pl ---------------------------------
+# Reguły dotyczą tylko domeny fitzapasy.pl, więc nie działają lokalnie (Docker)
+# ani na tymczasowej domenie Hostingera. $1 to ścieżka względem katalogu strony,
+# dzięki czemu reguły działają zarówno z public/ jako katalogiem głównym serwera,
+# jak i przy wdrożeniu całego repozytorium (Hostinger → Git).
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Adresy z prefiksem /public/ (widoczne przy wdrożeniu całego repozytorium) → bez prefiksu,
+  # żeby ta sama treść nie była dostępna pod dwoma adresami.
+  RewriteCond %{THE_REQUEST} \s/public/(\S*)\s
+  RewriteRule ^ /%1 [L,R=301]
+
+  # www.fitzapasy.pl → fitzapasy.pl
+  RewriteCond %{HTTP_HOST} ^www\.fitzapasy\.pl$ [NC]
+  RewriteRule ^(.*)$ https://fitzapasy.pl/$1 [L,R=301]
+
+  # http → https
+  RewriteCond %{HTTP_HOST} ^fitzapasy\.pl$ [NC]
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://fitzapasy.pl/$1 [L,R=301]
+</IfModule>
+
+# --- Typy MIME ----------------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType video/mp4 .mp4
+  AddType text/javascript .js
+  AddType font/woff2 .woff2
+  AddCharset utf-8 .html .css .js
+</IfModule>
+
+# --- Kompresja ----------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript text/plain text/xml application/xml image/svg+xml
+</IfModule>
+
+# --- Cache przeglądarki -------------------------------------------------------
+# HTML, CSS i JS: przeglądarka zawsze pyta serwer o nowszą wersję (tania odpowiedź 304),
+# więc zmiany są widoczne od razu po wdrożeniu. Czcionki, zdjęcia i filmy: miesiąc –
+# po podmianie zdjęcia lub filmu nadaj plikowi nową nazwę.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 0 seconds"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType video/mp4 "access plus 1 month"
+</IfModule>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js|xml|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+# --- Nagłówki bezpieczeństwa --------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+</IfModule>
+
+# --- Blokada plików, które nie powinny być publiczne -------------------------
+<FilesMatch "(^\.|\.(md|sh|log|bak)$)">
+  Require all denied
+</FilesMatch>

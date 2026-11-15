@@ -1,0 +1,20 @@
+# --- Dane dostępowe i lokalna konfiguracja ----------------------------------
+.env
+.env.*
+compose.override.yaml
+
+# --- Pliki źródłowe, które nie są częścią strony -----------------------------
+# Pierwotny, jednoplikowy eksport strony (29 MB, osadzone media)
+fitzapasy-whatsapp-email.html
+
+# --- Narzędzia ---------------------------------------------------------------
+node_modules/
+*.log
+
+# --- System i edytory --------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/

@@ -1,0 +1,15 @@
+# Uruchomienie:  docker compose up -d --build
+# Strona:        http://localhost:8080
+# Zatrzymanie:   docker compose down
+services:
+  web:
+    build:
+      context: docker
+    container_name: fitzapasy-web
+    ports:
+      - "8080:80"
+    # Całe repozytorium jako public_html – tak samo jak przy wdrożeniu Hostinger → Git.
+    # Zmiany w plikach widać od razu po odświeżeniu strony.
+    volumes:
+      - ./:/usr/local/apache2/htdocs:ro
+    restart: unless-stopped

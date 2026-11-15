@@ -1,0 +1,9 @@
+# Jednolite końce linii w plikach tekstowych (LF), niezależnie od systemu
+* text=auto eol=lf
+
+# Pliki binarne – bez konwersji i bez diffów tekstowych
+*.webp binary
+*.jpg  binary
+*.png  binary
+*.mp4  binary
+*.woff2 binary

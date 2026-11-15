@@ -1,0 +1,11 @@
+# Hostinger → Git wdraża całe repozytorium do public_html.
+# Strona leży w katalogu public/ – ta reguła kieruje do niego wszystkie żądania,
+# więc pozostałe pliki repozytorium (README, docker/, .git …) są niedostępne z sieci.
+# Właściwa konfiguracja serwera (HTTPS, cache, nagłówki) jest w public/.htaccess.
+
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
