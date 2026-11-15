@@ -4,9 +4,13 @@
  */
 import { REVIEWS } from './data/reviews.js';
 import { initCart } from './modules/cart.js';
+import { initMobileNav } from './modules/mobile-nav.js';
 import { initPhotoCarousel } from './modules/photo-carousel.js';
 import { initReviewCarousel } from './modules/review-carousel.js';
 import { initVideoAutoplay } from './modules/video-autoplay.js';
+
+const header = document.querySelector('[data-site-header]');
+if (header) initMobileNav(header);
 
 document.querySelectorAll('[data-carousel]').forEach(initPhotoCarousel);
 

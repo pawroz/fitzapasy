@@ -51,20 +51,27 @@
 
 <div class="top">Sprzęt do sportów walki · Wysyłka na terenie Polski · Płatność BLIK</div>
 
-<header class="site-header">
+<header class="site-header" data-site-header>
   <div class="w">
     <a href="#top"><img class="logo" src="assets/img/logo-fitzapasy.webp" alt="Fitzapasy – logo" width="260" height="147"></a>
-    <nav class="main-nav" aria-label="Menu główne">
+    <nav class="main-nav" id="main-nav" aria-label="Menu główne">
       <a href="#sklep">Sklep</a>
       <a href="#dlaczego">Dlaczego Fitzapasy</a>
       <a href="#treningi">Treningi</a>
       <a href="#trener">Trenerzy</a>
       <a href="#faq">FAQ</a>
       <a class="btn s" href="#kontakt">Kontakt</a>
+    </nav>
+    <div class="header-actions">
       <button class="cart-trigger" type="button" data-cart-open aria-label="Otwórz koszyk" aria-controls="cart-panel">
         Koszyk <span class="cart-count" data-cart-count>0</span>
       </button>
-    </nav>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-controls="main-nav" aria-expanded="false" aria-label="Otwórz menu">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
   </div>
 </header>
 

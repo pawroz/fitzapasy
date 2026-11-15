@@ -730,6 +730,7 @@ details p {
 }
 
 .main-nav {
+  margin-left: auto;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -739,6 +740,50 @@ details p {
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #d6d6d6;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 12px;
+}
+
+/* Przycisk menu („burger”) – widoczny tylko na wąskich ekranach */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0 11px;
+  background: #171717;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.nav-toggle:hover {
+  border-color: var(--red);
+}
+
+.nav-toggle-bar {
+  display: block;
+  height: 2px;
+  background: #fff;
+  border-radius: 1px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Ikona zmienia się w „X”, gdy menu jest otwarte */
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@keyframes nav-slide-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: none; }
 }
 
 /* Treningi – kafle kierunków */
@@ -1526,13 +1571,51 @@ details p {
 }
 
 /* 8. Responsywność --------------------------------------------------------- */
+@media (max-width: 960px) {
+  .site-header .w { flex-wrap: nowrap; }
+  .header-actions { margin-left: auto; }
+  .nav-toggle { display: flex; }
+
+  /* Menu rozwijane pod nagłówkiem; domyślnie ukryte */
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    max-height: calc(100dvh - 100%);
+    overflow-y: auto;
+    padding: 8px 24px 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-soft);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .site-header.nav-open .main-nav {
+    display: flex;
+    animation: nav-slide-in 0.2s ease;
+  }
+
+  .main-nav a:not(.btn) {
+    padding: 16px 0;
+    font-size: 15px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .main-nav .btn {
+    margin-top: 20px;
+    text-align: center;
+  }
+}
+
 @media (max-width: 700px) {
   section { padding: 60px 0; }
 
-  .site-header .w { align-items: flex-start; }
-  .main-nav { width: 100%; gap: 8px 16px; justify-content: flex-start; }
-  .main-nav .btn { margin-left: auto; }
-  .main-nav .cart-trigger { margin-left: 0; padding: 9px 11px; }
+  .header-actions .cart-trigger { padding: 9px 11px; }
 
   .prod { padding-bottom: 14px; }
   .car { height: clamp(360px, 110vw, 520px); }
@@ -1558,6 +1641,8 @@ details p {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .site-header.nav-open .main-nav { animation: none; }
+  .nav-toggle-bar { transition: none; }
   .sl,
   .review-dots button,
   .review-arrows button,
