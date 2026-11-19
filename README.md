@@ -9,6 +9,7 @@ serwera aplikacyjnego. Wdrażana na Hostinger przez integrację Git (push na `ma
 .htaccess                    kieruje ruch do public/ (reszta repozytorium niedostępna z sieci)
 public/                      ← strona
 ├── index.html               strona główna
+├── trening-personalny-poznan.html  podstrona pod frazę „trening personalny Poznań” (adres bez .html)
 ├── regulamin.html           regulamin sklepu (z formularzem odstąpienia)
 ├── polityka-prywatnosci.html
 ├── .htaccess                HTTPS i www → fitzapasy.pl, kompresja, cache, nagłówki bezpieczeństwa
@@ -54,13 +55,15 @@ się nie uruchamiają. Sprawdzisz je tak:
 curl -sI -H 'Host: www.fitzapasy.pl' http://localhost:8080/ | grep -i location
 ```
 
-Bez Dockera: `cd public && python3 -m http.server 8000` (bez reguł z `.htaccess`).
+Bez Dockera: `cd public && python3 -m http.server 8000` (bez reguł z `.htaccess`, więc adres
+`/trening-personalny-poznan` trzeba wtedy otworzyć z końcówką `.html`).
 Samo otwarcie `index.html` z dysku (`file://`) nie zadziała – przeglądarki blokują wtedy moduły JS.
 
 ## Typowe zmiany
 
 | Co zmienić | Gdzie |
 |---|---|
+| Ceny treningów | sekcja `#cennik` w `index.html` **i** w `trening-personalny-poznan.html` (oraz `offers` w danych strukturalnych podstrony) |
 | Ceny, opisy gum, nazwy w koszyku | `index.html`, sekcja `#sklep` (`data-name`, `data-price`, `.price`) |
 | Opinie | `assets/js/data/reviews.js` |
 | Numer WhatsApp i treść wiadomości z zamówieniem | `WHATSAPP_NUMBER` i `orderMessage()` w `assets/js/modules/cart.js` |

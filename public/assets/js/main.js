@@ -8,6 +8,7 @@ import { initMobileNav } from './modules/mobile-nav.js';
 import { initPhotoCarousel } from './modules/photo-carousel.js';
 import { initReviewCarousel } from './modules/review-carousel.js';
 import { initVideoAutoplay } from './modules/video-autoplay.js';
+import { initWhatsappLinks } from './modules/whatsapp-links.js';
 
 const header = document.querySelector('[data-site-header]');
 if (header) initMobileNav(header);
@@ -21,3 +22,4 @@ const reels = document.querySelector('[data-video-reels]');
 if (reels) initVideoAutoplay(reels);
 
 initCart();
+initWhatsappLinks();

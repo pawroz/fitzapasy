@@ -1,10 +1,11 @@
 import { createDots, createSlider, markActiveDot } from './slider.js';
 
-const INTERVAL_MS = 6500;
-
 const pad = (n) => String(n).padStart(2, '0');
 
-/** Karuzela opinii – pauzuje przy najechaniu myszą i fokusie klawiatury. */
+/**
+ * Karuzela opinii – bez automatycznej rotacji, żeby każdą opinię dało się spokojnie
+ * przeczytać. Przełączanie strzałkami, kropkami lub gestem przesunięcia.
+ */
 export function initReviewCarousel(root, reviews) {
   if (reviews.length === 0) return;
 
@@ -22,7 +23,6 @@ export function initReviewCarousel(root, reviews) {
   const slider = createSlider({
     root,
     count: reviews.length,
-    interval: INTERVAL_MS,
     onChange(active) {
       const review = reviews[active];
       textEl.textContent = `„${review.text}”`;
@@ -34,13 +34,4 @@ export function initReviewCarousel(root, reviews) {
 
   root.querySelector('[data-prev]')?.addEventListener('click', slider.prev);
   root.querySelector('[data-next]')?.addEventListener('click', slider.next);
-
-  root.addEventListener('mouseenter', slider.pause);
-  root.addEventListener('mouseleave', slider.resume);
-  root.addEventListener('focusin', (event) => {
-    if (event.target.matches('button')) slider.pause();
-  });
-  root.addEventListener('focusout', (event) => {
-    if (!root.contains(event.relatedTarget)) slider.resume();
-  });
 }

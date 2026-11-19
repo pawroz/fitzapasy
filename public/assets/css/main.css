@@ -3,7 +3,8 @@
    0. Fonty           5. Sekcje
    1. Tokeny          6. Koszyk
    2. Baza            7. Strony prawne
-   3. Układ           8. Responsywność
+   3. Układ           8. Podstrona „Trening personalny Poznań”
+                      9. Responsywność
    4. Komponenty
    ========================================================================== */
 
@@ -53,7 +54,8 @@
   --line-soft: #262626;
   --red: #d1241a;
   --red-dark: #b81e15;
-  --eyebrow: #e2261c;
+  /* Czerwień do drobnego tekstu – jaśniejsza od --red, by mieć kontrast ≥ 4,5:1 (WCAG AA) na wszystkich tłach */
+  --red-text: #f04a3f;
   --tx: #ededed;
   --tx-soft: #c4c4c4;
   --mut: #b5b5b5;
@@ -224,7 +226,6 @@ section {
 .grid--lists { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; }
 .grid--social { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 .grid--contact { gap: 16px; }
-.grid--packages { align-items: stretch; }
 
 /* 4. Komponenty ------------------------------------------------------------ */
 
@@ -235,7 +236,7 @@ section {
   letter-spacing: 4px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--eyebrow);
+  color: var(--red-text);
 }
 
 .lead {
@@ -257,7 +258,6 @@ section {
   gap: 20px;
 }
 
-.h-sub { font-size: clamp(28px, 4vw, 42px); }
 .h-mid { font-size: clamp(30px, 4vw, 44px); }
 
 .note {
@@ -266,7 +266,6 @@ section {
   color: var(--dim);
 }
 
-.note--mut { color: var(--mut); }
 .note--xs { font-size: 13px; max-width: 720px; }
 
 .cat {
@@ -420,7 +419,6 @@ section {
 /* Kadrowanie zdjęć (object-position w pionie) */
 .focus-15 { object-position: center 15%; }
 .focus-18 { object-position: center 18%; }
-.focus-22 { object-position: center 22%; }
 .focus-30 { object-position: center 30%; }
 .focus-55 { object-position: center 55%; }
 .focus-60 { object-position: center 60%; }
@@ -828,42 +826,6 @@ details p {
   border-bottom: 2px solid var(--red);
 }
 
-/* Pakiety */
-.package-intro {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 4px;
-}
-
-.package-intro .lead {
-  max-width: 760px;
-}
-
-.package {
-  gap: 14px;
-  min-height: 100%;
-}
-
-.package--featured {
-  border-color: var(--red);
-}
-
-.package h3 {
-  font-size: 26px;
-}
-
-.package p:not(.cat) {
-  color: var(--mut);
-  font-size: 15px;
-  margin: 0;
-}
-
-.package .btn {
-  margin-top: auto;
-  align-self: flex-start;
-}
-
 /* Opinie */
 .review-section {
   padding-top: clamp(38px, 5vw, 62px);
@@ -1017,6 +979,11 @@ details p {
   width: 100%;
 }
 
+/* Ramka w proporcjach zdjęcia (599×1100) – całe zdjęcie bez przycinania */
+.fitness-photo .ph--full {
+  aspect-ratio: 599 / 1100;
+}
+
 .collab-col {
   flex: 1 1 420px;
   gap: 16px;
@@ -1033,6 +1000,220 @@ details p {
 .cta-box .big {
   font-size: 28px;
   line-height: 1.1;
+}
+
+/* Cennik treningów */
+.pricing {
+  max-width: 1000px;
+}
+
+.pricing-head {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.pricing-head h2 {
+  font-size: clamp(30px, 4vw, 42px);
+  margin: 8px 0 12px;
+}
+
+.pricing-head .lead {
+  font-size: 17px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.pricing-group {
+  margin-top: 32px;
+}
+
+.pricing-group + .pricing-group {
+  margin-top: 36px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+
+.pricing-group-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-bottom: 16px;
+  font-size: 19px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.pricing-group-title small {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--mut);
+}
+
+.pricing-group-intro {
+  margin: -4px 0 16px;
+  font-size: 15px;
+  color: var(--tx-soft);
+}
+
+.pricing-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.pricing-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pricing-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.price-card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 20px 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+/* :where() – reset bez podnoszenia specyficzności, klasy elementów karty go nadpisują */
+:where(.price-card) p {
+  margin: 0;
+}
+
+.price-card--featured,
+.price-card--single {
+  border-color: var(--red);
+}
+
+.price-card--dark {
+  background: #121212;
+}
+
+.price-card-badge {
+  align-self: flex-start;
+  margin-bottom: 12px;
+  padding: 4px 7px;
+  border-radius: 2px;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.price-card-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #a8a8a8;
+}
+
+.price-card-amount {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--red);
+  white-space: nowrap;
+}
+
+.price-card > .price-card-amount {
+  margin: 14px 0 12px;
+}
+
+.price-card-per {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.price-card-saving {
+  margin-top: 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #a8a8a8;
+}
+
+.price-card--featured .price-card-saving {
+  color: var(--red-text);
+  font-weight: 800;
+}
+
+.price-card-desc {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--tx-soft);
+}
+
+.price-card > .btn {
+  margin-top: auto;
+  text-align: left;
+}
+
+.price-card > .price-card-desc {
+  margin-bottom: 18px;
+}
+
+/* Karta pojedynczego treningu – opis po lewej, cena i przycisk po prawej */
+.price-card--single {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  padding: 24px 20px;
+}
+
+.price-card--single + .pricing-grid {
+  margin-top: 14px;
+}
+
+.price-card--single h4 {
+  margin: 8px 0 10px;
+  font-size: 22px;
+  color: #fff;
+}
+
+.price-card--single .price-card-desc {
+  margin-top: 0;
+  font-size: 15px;
+}
+
+.price-card-buy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex: none;
+}
+
+.price-card-cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.price-card-unit {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--mut);
+}
+
+.pricing-note {
+  margin: 28px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--mut);
+}
+
+.pricing-note a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: var(--red);
+  text-underline-offset: 3px;
 }
 
 /* Trenerzy */
@@ -1452,6 +1633,63 @@ details p {
   overflow: hidden;
 }
 
+/* Komunikat „Dodano do koszyka” */
+.cart-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 14px 16px 14px 18px;
+  background: var(--card);
+  border: 1px solid #444;
+  border-left: 4px solid var(--red);
+  border-radius: 4px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 12px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.cart-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.cart-toast-link {
+  flex: none;
+  padding: 8px 12px;
+  background: var(--red);
+  border: 0;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.cart-toast-link:hover {
+  background: var(--red-dark);
+}
+
+@keyframes cart-bump {
+  50% { transform: scale(1.35); }
+}
+
+.cart-count.is-bumped {
+  animation: cart-bump 0.3s ease;
+}
+
 /* 7. Strony prawne (regulamin, polityka prywatności) ------------------------ */
 .legal-header .w {
   justify-content: space-between;
@@ -1570,7 +1808,149 @@ details p {
   text-underline-offset: 3px;
 }
 
-/* 8. Responsywność --------------------------------------------------------- */
+/* 8. Podstrona „Trening personalny Poznań” ------------------------------- */
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+  font-size: 13px;
+  color: var(--dim);
+}
+
+.breadcrumbs a {
+  color: var(--mut);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.breadcrumbs [aria-current] {
+  color: var(--tx-soft);
+}
+
+.tp-hero {
+  padding-top: 40px;
+}
+
+.tp-hero-photo {
+  flex: 0 1 420px;
+}
+
+.tp-hero-photo .ph {
+  aspect-ratio: 729 / 1100;
+  width: 100%;
+}
+
+.tp-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tp-facts li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 12px;
+  border-top: 3px solid var(--red);
+}
+
+.tp-facts b {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: #fff;
+}
+
+.tp-facts span {
+  font-size: 14px;
+  color: var(--mut);
+}
+
+.tp-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.tp-steps li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 26px;
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  counter-increment: step;
+}
+
+.tp-steps li::before {
+  content: counter(step);
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1;
+  color: var(--red);
+}
+
+.tp-steps b {
+  font-size: 19px;
+  color: #fff;
+}
+
+.tp-steps span {
+  font-size: 15px;
+  color: var(--mut);
+}
+
+.tp-quote {
+  margin: 0;
+  gap: 14px;
+}
+
+.tp-quote p {
+  margin: 0;
+  color: var(--tx);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.tp-quote footer {
+  margin-top: auto;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+.tp-map {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.tp-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 40px;
+}
+
+.tp-cta > div:first-child {
+  flex: 1 1 380px;
+}
+
+.tp-cta p {
+  margin: 12px 0 0;
+  color: var(--tx-soft);
+  max-width: 560px;
+}
+
+/* 9. Responsywność --------------------------------------------------------- */
 @media (max-width: 960px) {
   .site-header .w { flex-wrap: nowrap; }
   .header-actions { margin-left: auto; }
@@ -1612,8 +1992,17 @@ details p {
   }
 }
 
+@media (max-width: 860px) {
+  .pricing-grid--3 { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 700px) {
   section { padding: 60px 0; }
+
+  .pricing-grid--2 { grid-template-columns: 1fr; }
+  .price-card--single { flex-direction: column; align-items: stretch; }
+  .price-card-buy { align-items: flex-start; }
+  .price-card-cta { flex-wrap: wrap; }
 
   .header-actions .cart-trigger { padding: 9px 11px; }
 
@@ -1642,6 +2031,8 @@ details p {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .site-header.nav-open .main-nav { animation: none; }
+  .cart-toast { transition: none; }
+  .cart-count.is-bumped { animation: none; }
   .nav-toggle-bar { transition: none; }
   .sl,
   .review-dots button,

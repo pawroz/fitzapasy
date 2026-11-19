@@ -25,6 +25,10 @@ DirectoryIndex index.html
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^(.*)$ https://fitzapasy.pl/$1 [L,R=301]
+
+  # Adresy bez rozszerzenia: /trening-personalny-poznan → trening-personalny-poznan.html
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^([a-z0-9-]+)$ $1.html [L]
 </IfModule>
 
 # --- Typy MIME ----------------------------------------------------------------

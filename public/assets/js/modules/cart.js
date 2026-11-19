@@ -1,15 +1,17 @@
+import { whatsappUrl } from '../config.js';
+import { loadCart, saveCart } from './cart-storage.js';
+import { createToast } from './toast.js';
+
 /**
  * Koszyk po stronie przeglądarki. Strona nie przyjmuje płatności –
  * koszyk składa treść zamówienia i otwiera WhatsApp z gotową wiadomością.
- * Umowa zostaje zawarta dopiero po potwierdzeniu zamówienia przez sprzedawcę (patrz regulamin).
+ * Umowa zostaje zawarta dopiero po potwierdzeniu przez klienta podsumowania
+ * odesłanego przez sprzedawcę (patrz regulamin, §4).
  */
 
-const WHATSAPP_NUMBER = '48507573294';
 const EMPTY_MESSAGE = 'Twój koszyk jest pusty. Wybierz gumę w sklepie.';
 
 const formatPrice = (amount) => `${amount} zł`;
-
-const whatsappUrl = (text) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 
 export function initCart() {
   const $ = (selector) => document.querySelector(selector);
@@ -22,11 +24,16 @@ export function initCart() {
     checkout: $('[data-cart-checkout]'),
     consent: $('[data-cart-consent]'),
     closeButton: $('[data-cart-close]'),
+    toast: $('[data-cart-toast]'),
   };
   if (!ui.panel) return;
 
+  const addButtons = [...document.querySelectorAll('[data-add-to-cart]')];
+  const catalog = new Map(addButtons.map((button) => [button.dataset.name, Number(button.dataset.price)]));
+  const toast = ui.toast ? createToast(ui.toast) : null;
+
   /** @type {Map<string, {name: string, price: number, qty: number}>} */
-  const lines = new Map();
+  const lines = new Map(loadCart(catalog).map((line) => [line.name, line]));
   let returnFocusTo = null;
 
   // --- Stan -----------------------------------------------------------------
@@ -87,6 +94,14 @@ export function initCart() {
     ui.count.textContent = String(qty);
     ui.total.textContent = formatPrice(amount);
     updateCheckoutState();
+    saveCart([...lines.values()]);
+  }
+
+  // Krótkie „podbicie” licznika przy koszyku, żeby było widać, że coś się dodało.
+  function bumpCount() {
+    ui.count.classList.remove('is-bumped');
+    void ui.count.offsetWidth; // restart animacji przy kolejnych kliknięciach
+    ui.count.classList.add('is-bumped');
   }
 
   function updateCheckoutState() {
@@ -115,9 +130,10 @@ export function initCart() {
     );
   }
 
-// --- Panel ----------------------------------------------------------------
+  // --- Panel ----------------------------------------------------------------
 
   function open() {
+    toast?.hide();
     returnFocusTo = document.activeElement;
     ui.panel.classList.add('open');
     ui.overlay.classList.add('open');
@@ -137,14 +153,17 @@ export function initCart() {
 
   // --- Zdarzenia ------------------------------------------------------------
 
-  document.querySelectorAll('[data-add-to-cart]').forEach((button) => {
+  // Dodanie produktu nie otwiera panelu – pokazuje komunikat z przyciskiem „Zobacz koszyk”,
+  // dzięki czemu można spokojnie dodać kilka gum po kolei.
+  addButtons.forEach((button) => {
     button.addEventListener('click', () => {
       add(button.dataset.name, Number(button.dataset.price));
-      open();
+      bumpCount();
+      toast?.show(`Dodano do koszyka: ${button.dataset.name}`);
     });
   });
 
-  document.querySelector('[data-cart-open]')?.addEventListener('click', open);
+  document.querySelectorAll('[data-cart-open]').forEach((button) => button.addEventListener('click', open));
   ui.closeButton.addEventListener('click', close);
   ui.overlay.addEventListener('click', close);
   document.addEventListener('keydown', (event) => {
