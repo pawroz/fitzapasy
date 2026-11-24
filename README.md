@@ -14,7 +14,7 @@ public/                      ← strona
 ├── polityka-prywatnosci.html
 ├── .htaccess                HTTPS i www → fitzapasy.pl, kompresja, cache, nagłówki bezpieczeństwa
 ├── robots.txt, sitemap.xml
-├── favicon.png
+├── favicon.ico, icon-192.png, apple-touch-icon.png   ikony strony (kwadratowe – wymóg Google)
 └── assets/
     ├── css/main.css         style (tokeny → baza → układ → komponenty → sekcje → koszyk → RWD)
     ├── js/main.js           punkt wejścia (moduł ES)
